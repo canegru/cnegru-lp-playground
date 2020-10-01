@@ -21,7 +21,7 @@ $(document).ready(function () {
         visitorBlurredCallback
     });
 
-    $("#openWidget").click(function (e) {
+    $("#videoSC").click(function (e) {
         var { cmdNames: { writeSC } } = lpTag.agentSDK; // = "Write ChatLine"
         var data = {
             json: {
@@ -48,6 +48,13 @@ $(document).ready(function () {
         };
         lpTag.agentSDK.command(writeSC, data, notifyWhenDone);
     });
+
+    $("#videoText").click(function (e) {
+        var { cmdNames: { write } } = lpTag.agentSDK; // = "Write ChatLine"
+        var data = { text: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4' };
+        lpTag.agentSDK.command(write, data, notifyWhenDone);
+    });
+
     $("#sendData").click((e) => {
         const { cmdNames: { writeSC } } = lpTag.agentSDK; // = "Write ChatLine"
         const dataToPass = {
