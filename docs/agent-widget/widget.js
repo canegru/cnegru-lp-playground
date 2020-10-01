@@ -51,7 +51,7 @@ $(document).ready(function () {
 
     $("#videoText").click(function (e) {
         var { cmdNames: { write } } = lpTag.agentSDK; // = "Write ChatLine"
-        var data = { text: 'https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-mp4-file.mp4' };
+        var data = { text: 'https://static-assets.dev.fs.liveperson.com/ally/assets/RoundUpBooster.mp4' };
         lpTag.agentSDK.command(write, data, notifyWhenDone);
     });
 
