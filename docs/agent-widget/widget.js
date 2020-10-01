@@ -36,7 +36,7 @@ $(document).ready(function () {
                                 {
                                     "type": "link",
                                     "name": "liveperson",
-                                    "uri": "https://canegru.github.io/cnegru-lp-playground/client-widget/clientWidget.html",
+                                    "uri": "https://static-assets.dev.fs.liveperson.com/ally/assets/RoundUpBooster.mp4",
                                     "target": "slideout"
                                 }
                             ]
