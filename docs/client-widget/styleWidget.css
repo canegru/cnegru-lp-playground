@@ -2,3 +2,7 @@
     background-color: #e20074 !important;
     color: #ffffff;
 }
+
+html, body {
+    background-color: #673AB7;
+}
