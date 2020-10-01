@@ -1,6 +1,8 @@
+import 'regenerator-runtime/runtime';
 // Stylesheet
 import './stylesheets/global.less';
 import { get } from 'lodash';
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const purchaseProduct = (total) => {
   window.lpTag.sdes.push(
@@ -26,16 +28,19 @@ const purchaseProduct = (total) => {
   );
 };
 
-const converMp4Link = (text) => {
+const converMp4Link = async (text) => {
   console.log("converMp4Link -> text", text)
-  setTimeout(() => {
-    document.querySelectorAll(`[href="${text}"]`)[2].innerHTML = `
-    <video width="100%" controls>
-      <source src="${text}" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    `;
-  }, 100);
+  await delay(100);
+  const videoDivs = document.querySelectorAll(`[href="${text}"]`);
+
+  [].forEach.call(videoDivs, (div) => {
+    div.innerHTML = `
+      <video width="100%" controls>
+        <source src="${text}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      `;
+  });
 };
 
 window.lpTag.hooks.push({

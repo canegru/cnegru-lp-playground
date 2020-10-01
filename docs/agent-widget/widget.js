@@ -30,13 +30,13 @@ $(document).ready(function () {
                     {
                         "type": "button",
                         "tooltip": "button tooltip",
-                        "title": "Open Widget",
+                        "title": "Open Video",
                         "click": {
                             "actions": [
                                 {
                                     "type": "link",
                                     "name": "liveperson",
-                                    "uri": "https://static-assets.dev.fs.liveperson.com/tmo/development/catalintest/widget/sideCar/clientWidget.html",
+                                    "uri": "https://canegru.github.io/cnegru-lp-playground/client-widget/clientWidget.html",
                                     "target": "slideout"
                                 }
                             ]
