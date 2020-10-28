@@ -57,7 +57,7 @@ $(document).ready(function () {
 
     $("#tooltipMessage").click(function (e) {
         var { cmdNames: { write } } = lpTag.agentSDK; // = "Write ChatLine"
-        var data = { text: 'Hello Bob, {{{tooltip ""{\\"text\\":\\"investing\\",\\"description\\":\\"Investing is the act of allocating resources, usually money, with the expectation of generating an income or profit.\\"}""}}} is great.' };
+        var data = { text: 'Hello Bob, {{{tooltip ""{\\\"text\\\":\\\"investing\\\",\\\"description\\\":\\\"Investing is the act of allocating resources, usually money, with the expectation of generating an income or profit.\\\"}""}}} is great.' };
         lpTag.agentSDK.command(write, data, notifyWhenDone);
     });
 
