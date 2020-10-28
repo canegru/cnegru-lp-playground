@@ -4,6 +4,40 @@
   width: 100%;
 }
 
+.tooltip-test {}
+
+.tooltip-test {
+  border-bottom: 1px solid #ffffff !important;
+  cursor       : pointer !important;
+  position     : relative !important;
+  transition   : all 0.3s ease;
+}
+
+.tooltip-test:hover .tooltip-description {
+  display: block !important;
+  opacity: 1 !important;
+}
+
+.tooltip-description {
+  display       : none !important;
+  background    : #ffffff !important;
+  padding       : 10px !important;
+  position      : absolute !important;
+  z-index       : 1000 !important;
+  width         : 200px !important;
+  top           : 0;
+  left          : 0;
+  color         : #000000 !important;
+  border-radius : 5px;
+  box-shadow    : 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.22) !important;
+  opacity       : 0 !important;
+  transition    : all 0.5s ease !important;
+}
+
+.tooltip-description {
+  margin-top: 20px !important;
+}
+
 body {
   margin: 0;
 }

@@ -3,7 +3,8 @@ import 'regenerator-runtime/runtime';
 import './stylesheets/global.less';
 import { get } from 'lodash';
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
+import convInfo from './utils/convInfo';
+convInfo();
 const purchaseProduct = (total) => {
   window.lpTag.sdes.push(
     {
@@ -29,7 +30,6 @@ const purchaseProduct = (total) => {
 };
 
 const converMp4Link = async (text) => {
-  console.log("converMp4Link -> text", text)
   await delay(100);
   const videoDivs = document.querySelectorAll(`[href="${text}"]`);
 
@@ -43,6 +43,49 @@ const converMp4Link = async (text) => {
   });
 };
 
+/**
+ * Converts Text
+ * EX: Hello Bob, {tooltip text="blablabla" description="blablabla"} is great.
+ * @param {*} text 
+ */
+const convertToolTip = async (text) => {
+  await delay(100);
+  const lpChatDiv = document.getElementById('lpChat');
+  const allChatLines = lpChatDiv.getElementsByClassName('lpc_message__text_agent');
+  const foundDiv = [...allChatLines]
+    .map((d, index) => ({ value: d.innerHTML, index }))
+    .find(({ value }) => value.includes(text)).index;
+  const selectedDiv = allChatLines[foundDiv];
+  const selectedHtml = selectedDiv.innerHTML;
+
+  // Get index
+  const firstCharacterIndex = selectedHtml.lastIndexOf('{{{');
+  const lastCharacterIndex = selectedHtml.lastIndexOf('}}}');
+
+  // Extract tooltip
+  const toolTipExtract = selectedHtml.substring(firstCharacterIndex + 12, lastCharacterIndex - 1);
+  console.log(toolTipExtract)
+  const parsedJson = JSON.parse(JSON.parse(toolTipExtract)); // TODO: fix
+
+  // Extract first segment and last from message
+  const firstMessageExtra = selectedHtml.substring(0, firstCharacterIndex);
+  const lastCharacterExtra = selectedHtml.substring(lastCharacterIndex + 3, selectedHtml.length + 2);
+
+
+  const tooltipHtml = `<span class="tooltip-test">
+    ${parsedJson.text}
+    <span class="tooltip-description">
+    ${parsedJson.description}
+    </span>
+  </span>`
+
+  // Modify Div
+  selectedDiv.innerHTML = `
+  ${firstMessageExtra} ${tooltipHtml} ${lastCharacterExtra}
+  `;
+
+}
+
 window.lpTag.hooks.push({
   name: 'AFTER_GET_LINES',
   callback(options) {
@@ -50,6 +93,8 @@ window.lpTag.hooks.push({
       const text = get(line, 'text', '');
       if (text.includes('.mp4')) {
         converMp4Link(text);
+      } else if (text.includes('{tooltip')) {
+        convertToolTip(text);
       }
     });
   },
@@ -57,4 +102,5 @@ window.lpTag.hooks.push({
 
 
 window.purchaseProduct = purchaseProduct;
+
 

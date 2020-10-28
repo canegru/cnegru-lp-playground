@@ -55,6 +55,12 @@ $(document).ready(function () {
         lpTag.agentSDK.command(write, data, notifyWhenDone);
     });
 
+    $("#tooltipMessage").click(function (e) {
+        var { cmdNames: { write } } = lpTag.agentSDK; // = "Write ChatLine"
+        var data = { text: 'Hello Bob, {{{tooltip ""{\"text\":\"investing\",\"description\":\"Investing is the act of allocating resources, usually money, with the expectation of generating an income or profit.\"}""}}} is great.' };
+        lpTag.agentSDK.command(write, data, notifyWhenDone);
+    });
+
     $("#sendData").click((e) => {
         const { cmdNames: { writeSC } } = lpTag.agentSDK; // = "Write ChatLine"
         const dataToPass = {
