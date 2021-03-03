@@ -4,6 +4,9 @@ import './stylesheets/global.less';
 import { get } from 'lodash';
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 import convInfo from './utils/convInfo';
+import autoStartConversation from './plugins/autoStart';
+import closeConversation from './plugins/closeConversation';
+
 convInfo();
 const purchaseProduct = (total) => {
   window.lpTag.sdes.push(
@@ -86,21 +89,99 @@ const convertToolTip = async (text) => {
 
 }
 
+const addAriaLivePolite = async (text) => {
+  await delay(100);
+  const lpChatDiv = document.getElementById('lpChat');
+  const allChatLines = lpChatDiv.getElementsByClassName('lp-json-pollock');
+  [].forEach.call(allChatLines, (div) => {
+    if (div.getAttribute('aria-live') !== 'polite') {
+      div.setAttribute('aria-live', 'polite');
+    }
+  });
+}
+
 window.lpTag.hooks.push({
   name: 'AFTER_GET_LINES',
   callback(options) {
     options.data.lines.forEach((line) => {
       const text = get(line, 'text', '');
+      const type = get(line, 'type', '');
+
+      if (type === 'richContent') {
+        //addAriaLivePolite(line);
+      }
+
+      // Conver video and such
       if (text.includes('.mp4')) {
         converMp4Link(text);
       } else if (text.includes('{tooltip')) {
         convertToolTip(text);
       }
+
     });
   },
 });
 
-
+// add  aria-live="polite"
 window.purchaseProduct = purchaseProduct;
 
+lpTag.taglets = { lpDragManager: () => null };
 
+function addAccessibility(text) {
+  const lpChatDiv = document.getElementById('lpChat');
+  const allChatLines = lpChatDiv.getElementsByClassName('lp-json-pollock');
+  console.log('hereeeee');
+  [].forEach.call(allChatLines, (div) => {
+    if (div.getAttribute('aria-live') !== 'polite') {
+      div.setAttribute('aria-live', 'polite');
+    }
+  });
+}
+
+
+const customWidgetIfame = document.getElementsByClassName('custom-widget-iframe');
+[].forEach.call(customWidgetIfame, (div) => {
+  div.src = "about:blank"
+});
+
+window.lpTag.hooks.push({
+  name: 'AFTER_GET_LINES',
+  callback(options) {
+    try {
+      options.data.lines.forEach((line) => {
+        if (line && line.type === 'richContent') {
+          setTimeout(function test() {
+            addAccessibility(line)
+          }, 100);
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  },
+});
+
+/*
+window.lpTag.hooks.push({
+  name: 'AFTER_GET_LINES',
+  callback(options) {
+    options.data.lines.forEach((line) => {
+      //To hide the input box
+      if (line.isWelcomeMessage) {
+        setTimeout(function hideInput() {
+          document.getElementsByClassName('lpview_bottom_container')[0].style.display = 'none';
+        }, 100); // DOM rendering
+      }
+
+      //To show the input box
+      if (line.text === 'You got it! Let me connect with the right business expert now.') {
+        document.getElementsByClassName('lpview_bottom_container')[0].style.display = 'block';
+      }
+    });
+  }
+});
+
+*/
+
+autoStartConversation();
+closeConversation();
